@@ -2,17 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static Boolean exist(int num, ArrayList<Integer> arr) {
-        int i = 0;
-        Boolean ex = false;
-        while (i < arr.size() && arr.get(i) != 0) {
-            if (arr.get(i) == num) { // 배열에 있는 숫자인지
-                ex = true;
-            }
-            i++;
-        }
-        return ex;
-    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
