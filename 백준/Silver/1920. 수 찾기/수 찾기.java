@@ -1,34 +1,39 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static int binary(List<Long> arr, long num, int start, int end) {
-        while (true) {
-            int mid = (start + end) / 2;
-            if (start > end)
-                return 0;
-            if (arr.get(mid) > num) {
-                return binary(arr, num, start, mid - 1);
-            } else if (arr.get(mid) < num) {
-                return binary(arr, num, mid + 1, end);
-            } else
+
+    public static int binartSearch(List<Integer> list, int target) {
+        int left = 0, right = list.size() - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (list.get(mid) == target)
                 return 1;
+            else if (list.get(mid) < target)
+                left = mid + 1;
+            else
+                right = mid - 1;
         }
+        return 0;
+
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        List<Long> arr = new ArrayList<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        List<Integer> list = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            arr.add(sc.nextLong());
+            list.add(Integer.parseInt(st.nextToken()));
         }
-        Collections.sort(arr);
+        Collections.sort(list);
 
-        int m = sc.nextInt();
+        int m = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < m; i++) {
-            System.out.println(binary(arr, sc.nextLong(), 0, n - 1));
+            sb.append(binartSearch(list, Integer.parseInt(st.nextToken()))).append("\n");
         }
-        sc.close();
-
+        System.out.println(sb);
     }
 }
