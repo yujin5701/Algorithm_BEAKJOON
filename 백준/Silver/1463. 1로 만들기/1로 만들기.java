@@ -1,28 +1,28 @@
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
+    static int[] dp = new int[1000000 + 1];
 
-    public static int makeOne(int x) {
-        int[] dp = new int[x + 1];
-        dp[1] = 0;
+    static int dp(int n) {
 
-        for (int i = 2; i <= x; i++) {
+        if (n == 1)
+            return 0;
+
+        for (int i = 2; i <= n; i++) {
             dp[i] = dp[i - 1] + 1;
             if (i % 2 == 0)
                 dp[i] = Math.min(dp[i], dp[i / 2] + 1);
             if (i % 3 == 0)
                 dp[i] = Math.min(dp[i], dp[i / 3] + 1);
         }
-        return dp[x];
+        return dp[n];
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int x = sc.nextInt();
-        int count = makeOne(x);
-        System.out.println(count);
-
-        sc.close();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        dp[1] = 0;
+        System.out.println(dp(n));
 
     }
 }
