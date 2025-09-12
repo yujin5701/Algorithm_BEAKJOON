@@ -1,32 +1,31 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt(), M = sc.nextInt();
 
-        HashSet<String> listenSet = new HashSet<>();
-        for (int i = 0; i < N; i++) {
-            listenSet.add(sc.next());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        String s;
+        HashMap<String, String> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            s = br.readLine();
+            map.put(s, s);
         }
-
-        ArrayList<String> result = new ArrayList<>();
-
-        for (int i = 0; i < M; i++) {
-            String name = sc.next();
-            if (listenSet.contains(name))
-                result.add(name);
+        for (int i = 0; i < m; i++) {
+            s = br.readLine();
+            if (map.containsKey(s))
+                list.add(s);
         }
-
-        Collections.sort(result);
-
-        System.out.println(result.size());
-        for (int i = 0; i < result.size(); i++)
-            System.out.println(result.get(i));
-        sc.close();
+        Collections.sort(list);
+        StringBuilder sb = new StringBuilder();
+        sb.append(list.size()).append("\n");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i)).append("\n");
+        }
+        System.out.println(sb);
     }
-
 }
