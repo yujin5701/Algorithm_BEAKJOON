@@ -4,8 +4,7 @@ import java.util.*;
 public class Main {
     static int N, M, X;
     static final int INF = Integer.MAX_VALUE;
-    static List<Node>[] graph;
-    static int[] dist;
+    static List<Node>[] graph, reverseGraph;
 
     static class Node implements Comparable<Node> {
         int v, w;
@@ -21,10 +20,11 @@ public class Main {
         }
     }
 
-    static int dijkstra(int start, int x) {
-        dist = new int[N + 1];
+    static int[] dijkstra(List<Node>[] g, int start) {
+        int[] dist = new int[N + 1];
         Arrays.fill(dist, INF);
         dist[start] = 0;
+
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.add(new Node(start, 0)); // 제일 첫 노드
 
@@ -33,14 +33,14 @@ public class Main {
             if (dist[cur.v] < cur.w)
                 continue; // 이미 더 작은 값이면 패스
 
-            for (Node next : graph[cur.v]) {
+            for (Node next : g[cur.v]) {
                 if (dist[next.v] > dist[cur.v] + next.w) {
                     dist[next.v] = dist[cur.v] + next.w;
                     pq.add(new Node(next.v, dist[next.v]));
                 }
             }
         }
-        return dist[x];
+        return dist;
     }
 
     public static void main(String[] args) throws IOException {
@@ -52,20 +52,29 @@ public class Main {
         int maximum = Integer.MIN_VALUE;
 
         graph = new ArrayList[N + 1];
+        reverseGraph = new ArrayList[N + 1];
         for (int i = 1; i <= N; i++) {
             graph[i] = new ArrayList<>();
+            reverseGraph[i] = new ArrayList<>();
         }
 
-        dist = new int[N + 1];
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
             graph[u].add(new Node(v, w));
+            reverseGraph[v].add(new Node(u, w));
         }
+
+        int[] go = dijkstra(graph, X);
+        int[] back = dijkstra(reverseGraph, X);
         for (int i = 1; i <= N; i++) { // N명의 학생이 왕복 몇시간 걸리는지?
-            maximum = Math.max(maximum, dijkstra(i, X) + dijkstra(X, i));
+            if (i == X)
+                continue;
+            if (go[i] == INF || back[i] == INF)
+                continue;
+            maximum = Math.max(maximum, back[i] + go[i]);
         }
         System.out.println(maximum);
     }
